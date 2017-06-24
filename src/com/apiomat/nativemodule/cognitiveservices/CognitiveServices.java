@@ -75,6 +75,16 @@ public class CognitiveServices implements IModule
 		order = 1 )
 	public static String SUBSCRIPTION_KEY = "CognitiveServices_subscription_key";
 
+	@NativeModuleConfig(
+		datatype = Type.TEXT,
+		example = "123abc456def789ghi",
+		title = "Subscription key emotion",
+		info = "MS Cognitive Services subscription key for emotion API",
+		defaultValue = "",
+		notifyAllNodes = true,
+		order = 1 )
+	public static String SUBSCRIPTION_KEY_EMOTION = "CognitiveServices_subscription_key_emotion";
+
 	/**
 	 * This method gets called once in the cluster when the module is uploaded.
 	 */
