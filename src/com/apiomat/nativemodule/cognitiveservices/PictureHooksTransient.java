@@ -61,7 +61,9 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 		CognitiveServices.AOM.log( appName, "foreign ID: " + obj.getForeignId( ), false );
 
 		/* Take picture URL from PUT object */
-		String picUrl = "http://poc.apiomat.enterprises" + obj.getContentURL( ) + ".img?apiKey=" + r.getApiKey( );
+
+		String picUrl = "http://poc.apiomat.enterprises" + obj.getContentURL( ) + ".img?apiKey=" + r.getApiKey( ) +
+			"&system=" + r.getSystem( );
 		CognitiveServices.AOM.log( appName, "pic url: " + picUrl, false );
 
 		/* Read module configuration */
@@ -75,7 +77,6 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 			CognitiveServices.AOM.throwException( appName,
 				"No emotion subscription key found in the module configuration" );
 		}
-
 		String subKeyFace =
 			( String ) CognitiveServices.APP_CONFIG_PROXY.getConfigValue( CognitiveServices.SUBSCRIPTION_KEY_FACE,
 				appName,
@@ -87,30 +88,70 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 		}
 
 		/* Get emotion from MS Cognitive Services */
-		String jsonResultString = RequestHelper.emotionRequest( subKeyEmotion, picUrl );
-		CognitiveServices.AOM.log( appName, "jsonResult: " + jsonResultString, false );
+		String jsonResultEmotionString = RequestHelper.emotionRequest( subKeyEmotion, picUrl );
+		CognitiveServices.AOM.log( appName, "jsonResultEmotionString: " + jsonResultEmotionString, false );
+
+		/* Get face IDs for recognition */
+		String jsonResultFaceString = RequestHelper.faceRequest( subKeyFace, picUrl );
+		CognitiveServices.AOM.log( appName, "jsonResultFaceString: " + jsonResultFaceString, false );
 
 		/* Go through all detections in the result */
-		JSONArray jsonResult = new JSONArray( jsonResultString );
-		for ( int i = 0; i < jsonResult.length( ); i++ )
+
+		JSONArray jsonResultEmotion = new JSONArray( jsonResultEmotionString );
+		JSONArray jsonResultFace = new JSONArray( jsonResultFaceString );
+		for ( int i = 0; i < jsonResultEmotion.length( ); i++ )
 		{
 			CognitiveServices.AOM.log( appName, "got a detection from the MS API - turning into ApiOmat object...",
 				false );
-			JSONObject detectionJson = jsonResult.getJSONObject( i );
+			JSONObject emotionJson = jsonResultEmotion.getJSONObject( i );
 
-			JSONObject faceRectangleJson = detectionJson.getJSONObject( "faceRectangle" );
-			JSONObject scoresJson = detectionJson.getJSONObject( "scores" );
-			Emotion emotion = new Emotion( scoresJson );
+			JSONObject emotionFaceRectangleJson = emotionJson.getJSONObject( "faceRectangle" );
+			Rectangle rectangle = new Rectangle( emotionFaceRectangleJson );
+
+			JSONObject emotionScoresJson = emotionJson.getJSONObject( "scores" );
+			Emotion emotion = new Emotion( emotionScoresJson );
+
 			CognitiveServices.AOM.log( appName, "emotion values: " + emotion.toString( ), false );
 			CognitiveServices.AOM.log( appName, "calculated happiness: " + emotion.calculateHappiness( ), false );
-			/* Create and save detection object */
+
+			/* Create detection object and set face rectangle and emotion */
 			Detection detection = new Detection( );
 			detection.setPicId( obj.getForeignId( ) );
-			detection.setTop( faceRectangleJson.getLong( "top" ) );
-			detection.setWidth( faceRectangleJson.getLong( "width" ) );
-			detection.setLeft( faceRectangleJson.getLong( "left" ) );
-			detection.setHeight( faceRectangleJson.getLong( "height" ) );
+			detection.setTop( rectangle.getTop( ) );
+			detection.setWidth( rectangle.getWidth( ) );
+			detection.setLeft( rectangle.getLeft( ) );
+			detection.setHeight( rectangle.getHeight( ) );
 			detection.setHappiness( emotion.calculateHappiness( ) );
+
+			/* check if face result has a result for the same rectangle */
+			for ( int j = 0; j < jsonResultFace.length( ); j++ )
+			{
+				JSONObject faceJson = jsonResultFace.getJSONObject( j );
+				JSONObject faceRectangleJson = faceJson.getJSONObject( "faceRectangle" );
+				Rectangle rectangleFace = new Rectangle( faceRectangleJson );
+				if ( rectangle.equals( rectangleFace ) )
+				{
+					String faceId = faceJson.getString( "faceId" );
+					/* identify */
+					String identifyRequest = RequestHelper.identifyRequest( subKeyFace, picUrl, faceId );
+					JSONArray identifyJsonArray = new JSONArray( identifyRequest );
+					JSONObject identifyJsonObject = identifyJsonArray.getJSONObject( 0 );
+					JSONArray candidatesJson = identifyJsonObject.getJSONArray( "candidates" );
+					if ( candidatesJson.length( ) > 0 )
+					{
+						JSONObject candidate = candidatesJson.getJSONObject( 0 );
+						String personId = candidate.getString( "personId" );
+
+						/* get person with name */
+						String personJsonString = RequestHelper.personRequest( subKeyFace, picUrl, personId );
+						JSONObject personJson = new JSONObject( personJsonString );
+						String personName = personJson.getString( "name" );
+						CognitiveServices.AOM.log( appName, "found name: " + personName, false );
+					}
+				}
+			}
+
+			/* save */
 			detection.save( );
 		}
 	}

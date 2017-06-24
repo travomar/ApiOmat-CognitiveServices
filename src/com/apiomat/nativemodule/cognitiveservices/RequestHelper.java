@@ -15,6 +15,7 @@ import java.net.URI;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
@@ -110,6 +111,86 @@ public class RequestHelper
 		catch ( Exception e )
 		{
 			// Display error message.
+			System.out.println( e.getMessage( ) );
+		}
+		return result;
+	}
+
+	public static String identifyRequest( String subscriptionKey, String picUrl, String faceId )
+	{
+		String result = null;
+		HttpClient httpclient = new DefaultHttpClient( );
+
+		try
+		{
+			URIBuilder builder = new URIBuilder( "https://westeurope.api.cognitive.microsoft.com/face/v1.0/identify" );
+
+			// Prepare the URI for the REST API call.
+			URI uri = builder.build( );
+			HttpPost request = new HttpPost( uri );
+
+			// Request headers.
+			request.setHeader( "Content-Type", "application/json" );
+			request.setHeader( "Ocp-Apim-Subscription-Key", subscriptionKey );
+
+			// Request body.
+			StringEntity reqEntity = new StringEntity(
+				"{\"personGroupId\":\"emotion_test\",\"faceIds\":[\"" + faceId +
+					"\"],\"maxNumOfCandidatesReturned\":1,\"confidenceThreshold\": 0.5}" );
+			request.setEntity( reqEntity );
+
+			// Execute the REST API call and get the response entity.
+			HttpResponse response = httpclient.execute( request );
+			HttpEntity entity = response.getEntity( );
+
+			if ( entity != null )
+			{
+				// Format and display the JSON response.
+				System.out.println( "REST Response:\n" );
+
+				result = EntityUtils.toString( entity ).trim( );
+			}
+		}
+		catch ( Exception e )
+		{
+			// Display error message.
+			System.out.println( e.getMessage( ) );
+		}
+		return result;
+	}
+
+	public static String personRequest( String subscriptionKey, String picUrl, String personId )
+	{
+		String result = null;
+
+		HttpClient httpClient = new DefaultHttpClient( );
+
+		try
+		{
+			// NOTE: You must use the same region in your REST call as you used to obtain your subscription keys.
+			// For example, if you obtained your subscription keys from westcentralus, replace "westus" in the
+			// URL below with "westcentralus".
+			URIBuilder uriBuilder =
+				new URIBuilder(
+					"https://westeurope.api.cognitive.microsoft.com/face/v1.0/persongroups/emotion_test/persons/" +
+						personId );
+
+			URI uri = uriBuilder.build( );
+			HttpGet request = new HttpGet( uri );
+
+			// Request headers. Replace the example key below with your valid subscription key.
+			request.setHeader( "Ocp-Apim-Subscription-Key", subscriptionKey );
+
+			HttpResponse response = httpClient.execute( request );
+			HttpEntity entity = response.getEntity( );
+
+			if ( entity != null )
+			{
+				result = EntityUtils.toString( entity );
+			}
+		}
+		catch ( Exception e )
+		{
 			System.out.println( e.getMessage( ) );
 		}
 		return result;
