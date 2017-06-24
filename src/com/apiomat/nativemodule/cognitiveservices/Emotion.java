@@ -62,7 +62,7 @@ public class Emotion
 
 		if ( positive > neutral && positive > negative )
 		{
-			if ( positive > 66d )
+			if ( positive > 0.66d )
 			{
 				result = 4L;
 			}
@@ -77,7 +77,7 @@ public class Emotion
 		}
 		else if ( negative > positive && negative > neutral )
 		{
-			if ( negative > 66d )
+			if ( negative > 0.66d )
 			{
 				result = 0L;
 			}
@@ -88,4 +88,18 @@ public class Emotion
 		}
 		return result;
 	}
+
+	/* (non-Javadoc)
+	 *
+	 * @see java.lang.Object#toString() */
+	@Override
+	public String toString( )
+	{
+		return "Emotion [anger=" + this.anger + ", contempt=" + this.contempt + ", disgust=" + this.disgust +
+			", fear=" + this.fear +
+			", happiness=" + this.happiness + ", neutral=" + this.neutral + ", sadness=" + this.sadness +
+			", surprise=" + this.surprise +
+			"]";
+	}
+
 }
