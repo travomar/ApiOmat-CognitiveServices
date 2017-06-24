@@ -93,6 +93,10 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 			JSONObject detectionJson = jsonResult.getJSONObject( i );
 
 			JSONObject faceRectangleJson = detectionJson.getJSONObject( "faceRectangle" );
+			JSONObject faceAttributesJson = detectionJson.getJSONObject( "faceAttributes" );
+			JSONObject faceEmotionJson = faceAttributesJson.getJSONObject( "emotion" );
+			Emotion emotion = new Emotion( faceEmotionJson );
+			CognitiveServices.AOM.log( appName, "calculated happiness: " + emotion.calculateHappiness( ), false );
 			/* Create and save detection object */
 			Detection detection = new Detection( );
 			detection.setPicId( obj.getForeignId( ) );
@@ -100,6 +104,7 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 			detection.setWidth( faceRectangleJson.getLong( "width" ) );
 			detection.setLeft( faceRectangleJson.getLong( "left" ) );
 			detection.setHeight( faceRectangleJson.getLong( "height" ) );
+			detection.setHappiness( emotion.calculateHappiness( ) );
 			detection.save( );
 		}
 	}
