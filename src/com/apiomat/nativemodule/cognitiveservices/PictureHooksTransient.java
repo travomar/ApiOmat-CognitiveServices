@@ -131,8 +131,17 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 				Rectangle rectangleFace = new Rectangle( faceRectangleJson );
 				if ( rectangle.equals( rectangleFace ) )
 				{
+					/* set gender and age */
+					JSONObject faceAttributes = faceJson.getJSONObject( "faceAttributes" );
+					String gender = faceAttributes.getString( "gender" );
+					CognitiveServices.AOM.log( appName, "found gender: " + gender, false );
+					long age = new Double( faceAttributes.getDouble( "age" ) ).longValue( );
+					CognitiveServices.AOM.log( appName, "found age: " + age, false );
+					detection.setGender( gender );
+					detection.setAge( age );
+
 					String faceId = faceJson.getString( "faceId" );
-					/* identify */
+					/* identify (for name) */
 					String identifyRequest = RequestHelper.identifyRequest( subKeyFace, picUrl, faceId );
 					JSONArray identifyJsonArray = new JSONArray( identifyRequest );
 					JSONObject identifyJsonObject = identifyJsonArray.getJSONObject( 0 );
@@ -147,6 +156,13 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 						JSONObject personJson = new JSONObject( personJsonString );
 						String personName = personJson.getString( "name" );
 						CognitiveServices.AOM.log( appName, "found name: " + personName, false );
+
+						/* set found name */
+						detection.setName( personName );
+					}
+					else
+					{
+						detection.setName( "?" );
 					}
 				}
 			}

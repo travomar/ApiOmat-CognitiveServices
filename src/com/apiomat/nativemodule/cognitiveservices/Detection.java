@@ -61,9 +61,12 @@ public class Detection extends AbstractClientDataModel implements IModel<Detecti
     public static final String MODEL_NAME = "Detection";
 
     /** class specific attributes */
+    private Long age = null;
+    private String gender = null;
     private Long happiness = null;
     private Long height = null;
     private Long left = null;
+    private String name = null;
     private String picId = null;
     private Long top = null;
     private Long width = null;
@@ -89,6 +92,26 @@ public class Detection extends AbstractClientDataModel implements IModel<Detecti
     public String getModelName( )
     {
         return MODEL_NAME;
+    }
+
+    public Long getAge()
+    {
+         return this.age;
+    }
+
+    public void setAge( Long arg )
+    {
+        this.age = arg;
+    }
+
+    public String getGender()
+    {
+         return this.gender;
+    }
+
+    public void setGender( String arg )
+    {
+        this.gender = arg;
     }
 
     public Long getHappiness()
@@ -119,6 +142,16 @@ public class Detection extends AbstractClientDataModel implements IModel<Detecti
     public void setLeft( Long arg )
     {
         this.left = arg;
+    }
+
+    public String getName()
+    {
+         return this.name;
+    }
+
+    public void setName( String arg )
+    {
+        this.name = arg;
     }
 
     public String getPicId()
