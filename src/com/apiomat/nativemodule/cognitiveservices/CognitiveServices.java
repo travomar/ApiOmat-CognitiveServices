@@ -68,22 +68,22 @@ public class CognitiveServices implements IModule
 	@NativeModuleConfig(
 		datatype = Type.TEXT,
 		example = "123abc456def789ghi",
-		title = "Subscription key",
-		info = "MS Cognitive Services subscription key",
-		defaultValue = "",
-		notifyAllNodes = true,
-		order = 1 )
-	public static String SUBSCRIPTION_KEY = "CognitiveServices_subscription_key";
-
-	@NativeModuleConfig(
-		datatype = Type.TEXT,
-		example = "123abc456def789ghi",
-		title = "Subscription key emotion",
-		info = "MS Cognitive Services subscription key for emotion API",
+		title = "Emotion API subscription key",
+		info = "MS Cognitive Services Emotion API subscription key",
 		defaultValue = "",
 		notifyAllNodes = true,
 		order = 1 )
 	public static String SUBSCRIPTION_KEY_EMOTION = "CognitiveServices_subscription_key_emotion";
+
+	@NativeModuleConfig(
+		datatype = Type.TEXT,
+		example = "123abc456def789ghi",
+		title = "Face API subscription key",
+		info = "MS Cognitive Services Face API subscription key",
+		defaultValue = "",
+		notifyAllNodes = true,
+		order = 2 )
+	public static String SUBSCRIPTION_KEY_FACE = "CognitiveServices_subscription_key_face";
 
 	/**
 	 * This method gets called once in the cluster when the module is uploaded.

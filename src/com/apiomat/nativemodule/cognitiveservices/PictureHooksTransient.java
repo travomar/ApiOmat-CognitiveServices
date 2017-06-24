@@ -77,7 +77,7 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 		}
 
 		String subKeyFace =
-			( String ) CognitiveServices.APP_CONFIG_PROXY.getConfigValue( CognitiveServices.SUBSCRIPTION_KEY_EMOTION,
+			( String ) CognitiveServices.APP_CONFIG_PROXY.getConfigValue( CognitiveServices.SUBSCRIPTION_KEY_FACE,
 				appName,
 				r.getSystem( ) );
 		if ( subKeyFace == null || "".equals( subKeyFace ) )
