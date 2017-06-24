@@ -64,6 +64,7 @@ public class Detection extends AbstractClientDataModel implements IModel<Detecti
     private Long happiness = null;
     private Long height = null;
     private Long left = null;
+    private String picId = null;
     private Long top = null;
     private Long width = null;
     /**
@@ -118,6 +119,16 @@ public class Detection extends AbstractClientDataModel implements IModel<Detecti
     public void setLeft( Long arg )
     {
         this.left = arg;
+    }
+
+    public String getPicId()
+    {
+         return this.picId;
+    }
+
+    public void setPicId( String arg )
+    {
+        this.picId = arg;
     }
 
     public Long getTop()

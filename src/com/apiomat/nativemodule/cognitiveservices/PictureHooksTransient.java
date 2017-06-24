@@ -34,6 +34,8 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.apiomat.nativemodule.AbstractClientDataModel;
 import com.apiomat.nativemodule.IModelHooksTransient;
@@ -67,9 +69,11 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 		String appName = r.getApplicationName( );
 		CognitiveServices.AOM.log( appName, "foreign ID: " + obj.getForeignId( ), false );
 
+		/* Take picture URL from PUT object */
 		String picUrl = "http://poc.apiomat.enterprises" + obj.getContentURL( ) + ".img?apiKey=" + r.getApiKey( );
 		CognitiveServices.AOM.log( appName, "pic url: " + picUrl, false );
 
+		/* Get emotion from MS Cognitive Services */
 		String subKey =
 			( String ) CognitiveServices.APP_CONFIG_PROXY.getConfigValue( CognitiveServices.SUBSCRIPTION_KEY, appName,
 				r.getSystem( ) );
@@ -77,8 +81,27 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 		{
 			CognitiveServices.AOM.throwException( appName, "No subscription key found in the module configuration" );
 		}
-		String jsonResult = faceRequest( subKey, picUrl );
-		CognitiveServices.AOM.log( appName, "jsonResult: " + jsonResult, false );
+		String jsonResultString = faceRequest( subKey, picUrl );
+		CognitiveServices.AOM.log( appName, "jsonResult: " + jsonResultString, false );
+
+		/* Go through all detections in the result */
+		JSONArray jsonResult = new JSONArray( jsonResultString );
+		for ( int i = 0; i < jsonResult.length( ); i++ )
+		{
+			CognitiveServices.AOM.log( appName, "got a detection from the MS API - turning into ApiOmat object...",
+				false );
+			JSONObject detectionJson = jsonResult.getJSONObject( i );
+
+			JSONObject faceRectangleJson = detectionJson.getJSONObject( "faceRectangle" );
+			/* Create and save detection object */
+			Detection detection = new Detection( );
+			detection.setPicId( obj.getForeignId( ) );
+			detection.setTop( faceRectangleJson.getLong( "top" ) );
+			detection.setWidth( faceRectangleJson.getLong( "width" ) );
+			detection.setLeft( faceRectangleJson.getLong( "left" ) );
+			detection.setHeight( faceRectangleJson.getLong( "height" ) );
+			detection.save( );
+		}
 	}
 
 	private static String faceRequest( String subscriptionKey, String picUrl )
