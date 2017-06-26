@@ -143,22 +143,29 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 					String faceId = faceJson.getString( "faceId" );
 					/* identify (for name) */
 					String identifyRequest = RequestHelper.identifyRequest( subKeyFace, picUrl, faceId );
-					JSONArray identifyJsonArray = new JSONArray( identifyRequest );
-					JSONObject identifyJsonObject = identifyJsonArray.getJSONObject( 0 );
-					JSONArray candidatesJson = identifyJsonObject.getJSONArray( "candidates" );
-					if ( candidatesJson.length( ) > 0 )
+					if ( identifyRequest != null && identifyRequest.length( ) > 0 && identifyRequest.startsWith( "[" ) )
 					{
-						JSONObject candidate = candidatesJson.getJSONObject( 0 );
-						String personId = candidate.getString( "personId" );
+						JSONArray identifyJsonArray = new JSONArray( identifyRequest );
+						JSONObject identifyJsonObject = identifyJsonArray.getJSONObject( 0 );
+						JSONArray candidatesJson = identifyJsonObject.getJSONArray( "candidates" );
+						if ( candidatesJson.length( ) > 0 )
+						{
+							JSONObject candidate = candidatesJson.getJSONObject( 0 );
+							String personId = candidate.getString( "personId" );
 
-						/* get person with name */
-						String personJsonString = RequestHelper.personRequest( subKeyFace, picUrl, personId );
-						JSONObject personJson = new JSONObject( personJsonString );
-						String personName = personJson.getString( "name" );
-						CognitiveServices.AOM.log( appName, "found name: " + personName, false );
+							/* get person with name */
+							String personJsonString = RequestHelper.personRequest( subKeyFace, picUrl, personId );
+							JSONObject personJson = new JSONObject( personJsonString );
+							String personName = personJson.getString( "name" );
+							CognitiveServices.AOM.log( appName, "found name: " + personName, false );
 
-						/* set found name */
-						detection.setName( personName );
+							/* set found name */
+							detection.setName( personName );
+						}
+						else
+						{
+							detection.setName( "?" );
+						}
 					}
 					else
 					{
