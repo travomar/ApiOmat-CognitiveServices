@@ -51,7 +51,7 @@ public class ObjectPictureHooksTransient<T extends ObjectPicture> implements IMo
 	@Override
 	public String doPost( ObjectPicture obj, Request r )
 	{
-		return null;
+		return String.valueOf( System.currentTimeMillis( ) );
 	}
 
 	@Override
@@ -106,7 +106,12 @@ public class ObjectPictureHooksTransient<T extends ObjectPicture> implements IMo
 				CognitiveServices.AOM.throwException( appName,
 					"No translate subscription key found in the module configuration" );
 			}
-			String translatedCaption = RequestHelper.translationRequest( subKeyTranslate, captionString, "de" );
+			/* get language to translate to from user */
+			// LanguageUser user =
+			// ( LanguageUser ) CognitiveServices.AOM.findById( appName, r.getUserEmail( ), LanguageUser.MODULE_NAME,
+			// LanguageUser.MODEL_NAME, r );
+			String translatedCaption =
+				RequestHelper.translationRequest( subKeyTranslate, captionString, "de" );
 			CognitiveServices.AOM.log( appName, "translatedCaption: " + translatedCaption, false );
 			List<String> translations = new ArrayList<>( );
 			translations.add( translatedCaption );
@@ -119,7 +124,9 @@ public class ObjectPictureHooksTransient<T extends ObjectPicture> implements IMo
 	@Override
 	public ObjectPicture doGet( String foreignId, Request r )
 	{
-		return null;
+		ObjectPicture temp = new ObjectPicture( );
+		temp.setForeignId( foreignId );
+		return temp;
 	}
 
 	@Override
