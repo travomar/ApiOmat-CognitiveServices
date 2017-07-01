@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.apiomat.nativemodule.AbstractClientDataModel;
+import com.apiomat.nativemodule.IModel;
 import com.apiomat.nativemodule.IModelHooksTransient;
 import com.apiomat.nativemodule.Request;
 
@@ -107,11 +108,25 @@ public class ObjectPictureHooksTransient<T extends ObjectPicture> implements IMo
 					"No translate subscription key found in the module configuration" );
 			}
 			/* get language to translate to from user */
-			// LanguageUser user =
-			// ( LanguageUser ) CognitiveServices.AOM.findById( appName, r.getUserEmail( ), LanguageUser.MODULE_NAME,
-			// LanguageUser.MODEL_NAME, r );
-			String translatedCaption =
-				RequestHelper.translationRequest( subKeyTranslate, captionString, "de" );
+			String translatedCaption = null;
+			try
+			{
+				IModel<?>[ ] users =
+					CognitiveServices.AOM.findByNames( appName,
+						LanguageUser.MODULE_NAME, LanguageUser.MODEL_NAME, "userName == \"" + r.getUserEmail( ) + "\"",
+						r );
+				LanguageUser user = ( LanguageUser ) users[ 0 ];
+				translatedCaption =
+					RequestHelper.translationRequest( subKeyTranslate, captionString, user.getLearningLanguageCode( ) );
+			}
+			catch ( Exception ex )
+			{
+				CognitiveServices.AOM.logError( appName, "error while finding language user: " + ex.toString( ),
+					false );
+				translatedCaption =
+					RequestHelper.translationRequest( subKeyTranslate, captionString, "de" );
+			}
+
 			CognitiveServices.AOM.log( appName, "translatedCaption: " + translatedCaption, false );
 			List<String> translations = new ArrayList<>( );
 			translations.add( translatedCaption );
