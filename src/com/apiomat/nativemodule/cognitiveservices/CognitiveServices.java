@@ -85,6 +85,16 @@ public class CognitiveServices implements IModule
 		order = 2 )
 	public static String SUBSCRIPTION_KEY_FACE = "CognitiveServices_subscription_key_face";
 
+	@NativeModuleConfig(
+		datatype = Type.TEXT,
+		example = "123abc456def789ghi",
+		title = "Computer Vision API subscription key",
+		info = "MS Cognitive Services Computer Vision API subscription key",
+		defaultValue = "",
+		notifyAllNodes = true,
+		order = 3 )
+	public static String SUBSCRIPTION_KEY_OBJECT = "CognitiveServices_subscription_key_object";
+
 	/**
 	 * This method gets called once in the cluster when the module is uploaded.
 	 */
