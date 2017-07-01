@@ -78,7 +78,7 @@ public class ObjectPictureHooksTransient<T extends ObjectPicture> implements IMo
 				"No computer vision subscription key found in the module configuration" );
 		}
 
-		/* Get recognized objects from MS Cognitive Services */
+		/* Get recognized objects / caption from MS Cognitive Services */
 		String jsonResultObjectString = RequestHelper.objectRequest( subKeyObject, picUrl );
 		CognitiveServices.AOM.log( appName, "jsonResultObjectString: " + jsonResultObjectString, false );
 
@@ -90,12 +90,28 @@ public class ObjectPictureHooksTransient<T extends ObjectPicture> implements IMo
 			String captionString = captionJsonObject.getString( "text" );
 			CognitiveServices.AOM.log( appName, "captionString: " + captionString, false );
 
-			/* Create and save detection */
+			/* Create detection */
 			TranslatedDetection translatedDetection = new TranslatedDetection( );
 			List<String> detections = new ArrayList<>( );
 			detections.add( captionString );
 			translatedDetection.setDetections( detections );
 			translatedDetection.setForeignId( obj.getForeignId( ) );
+
+			/* Add translation */
+			String subKeyTranslate =
+				( String ) CognitiveServices.APP_CONFIG_PROXY.getConfigValue(
+					CognitiveServices.SUBSCRIPTION_KEY_TRANSLATE, appName, r.getSystem( ) );
+			if ( subKeyTranslate == null || "".equals( subKeyTranslate ) )
+			{
+				CognitiveServices.AOM.throwException( appName,
+					"No translate subscription key found in the module configuration" );
+			}
+			String translatedCaption = RequestHelper.translationRequest( subKeyTranslate, captionString, "de" );
+			CognitiveServices.AOM.log( appName, "translatedCaption: " + translatedCaption, false );
+			List<String> translations = new ArrayList<>( );
+			translations.add( translatedCaption );
+			translatedDetection.setTranslations( translations );
+
 			translatedDetection.save( );
 		}
 	}

@@ -95,6 +95,16 @@ public class CognitiveServices implements IModule
 		order = 3 )
 	public static String SUBSCRIPTION_KEY_OBJECT = "CognitiveServices_subscription_key_object";
 
+	@NativeModuleConfig(
+		datatype = Type.TEXT,
+		example = "123abc456def789ghi",
+		title = "Translation API subscription key",
+		info = "MS Cognitive Services Translation API subscription key",
+		defaultValue = "",
+		notifyAllNodes = true,
+		order = 4 )
+	public static String SUBSCRIPTION_KEY_TRANSLATE = "CognitiveServices_subscription_key_translate";
+
 	/**
 	 * This method gets called once in the cluster when the module is uploaded.
 	 */

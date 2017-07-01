@@ -28,6 +28,11 @@ import org.apache.http.util.EntityUtils;
 public class RequestHelper
 {
 
+	private static String token = "";
+	private static long lastTokenFetch = 0;
+	private static final long MILLIS_PER_10_MINUTES = 1000L * 60L * 10L;
+	private static final long EARLIER = 1000 * 30L; // make the call 30 seconds earlier
+
 	public static String emotionRequest( String subscriptionKey, String picUrl )
 	{
 		String result = null;
@@ -237,6 +242,109 @@ public class RequestHelper
 			System.out.println( e.getMessage( ) );
 		}
 		return null;
+	}
+
+	/**
+	 * https://docs.microsofttranslator.com/text-translate.html#!/default/get_Translate
+	 *
+	 * @param subscriptionKey
+	 * @param textToTranslate
+	 * @return translated text
+	 */
+	public static String translationRequest( String subscriptionKey, String textToTranslate,
+		String langCodeToTranslateTo )
+	{
+		HttpClient httpclient = new DefaultHttpClient( );
+
+		try
+		{
+			URIBuilder builder = new URIBuilder( "https://api.microsofttranslator.com/V2/Http.svc/Translate" );
+
+			builder.setParameter( "text", textToTranslate );
+			builder.setParameter( "to", langCodeToTranslateTo );
+
+			// Prepare the URI for the REST API call.
+			URI uri = builder.build( );
+			HttpGet request = new HttpGet( uri );
+
+			// Request headers.
+			request.setHeader( "Authorization", "Bearer " + getToken( subscriptionKey ) );
+
+			// Execute the REST API call and get the response entity.
+			HttpResponse response = httpclient.execute( request );
+			HttpEntity entity = response.getEntity( );
+
+			if ( entity != null )
+			{
+				// Format and display the JSON response.
+				String translatedTextXml = EntityUtils.toString( entity );
+				String translatedText = translatedTextXml.substring( translatedTextXml.indexOf( ">" ) + 1,
+					translatedTextXml.lastIndexOf( "<" ) );
+				return translatedText;
+			}
+		}
+		catch ( Exception e )
+		{
+			// Display error message.
+			System.out.println( e.getMessage( ) );
+		}
+		return "?";
+	}
+
+	public static String getToken( String subscriptionKey )
+	{
+		if ( System.currentTimeMillis( ) - lastTokenFetch >= MILLIS_PER_10_MINUTES - EARLIER )
+		{
+			// TODO: log that we're fetching a new token - to check if it works correctly (doesn't get called too often)
+			token = tokenRequest( subscriptionKey );
+		}
+		return token;
+	}
+
+	/**
+	 * Use: Fetch new token every 10 minutes
+	 *
+	 * https://docs.microsofttranslator.com/oauth-token.html
+	 *
+	 * @param subscriptionKey
+	 * @return token
+	 */
+	private static String tokenRequest( String subscriptionKey )
+	{
+		HttpClient httpclient = new DefaultHttpClient( );
+
+		try
+		{
+			URIBuilder builder = new URIBuilder( "https://api.cognitive.microsoft.com/sts/v1.0/issueToken" );
+
+			// Prepare the URI for the REST API call.
+			URI uri = builder.build( );
+			HttpPost request = new HttpPost( uri );
+
+			// Request headers.
+			request.setHeader( "Ocp-Apim-Subscription-Key", subscriptionKey );
+
+			// Request body.
+			StringEntity reqEntity = new StringEntity( "" );
+			request.setEntity( reqEntity );
+
+			// Execute the REST API call and get the response entity.
+			HttpResponse response = httpclient.execute( request );
+			HttpEntity entity = response.getEntity( );
+
+			if ( entity != null )
+			{
+				// Format and display the JSON response.
+				return EntityUtils.toString( entity );
+			}
+		}
+		catch ( Exception e )
+		{
+			// Display error message.
+			System.out.println( e.getMessage( ) );
+		}
+		return null;
+
 	}
 
 }
