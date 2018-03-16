@@ -72,7 +72,6 @@
 		<copy tofile="./tmp/sdk.properties" file="sdk.properties" />
 		<copy todir="./tmp">
 			<fileset dir="${src}">
-				<include name="**/${moduleName}.java" />
 				<include name="**/*Hooks.java" />
                 <include name="**/*HooksNonTransient.java" />
                 <include name="**/*HooksTransient.java" />
@@ -80,11 +79,10 @@
 				<exclude name="**/IModelHooks.java" />
 			</fileset>
 		</copy>
-		<unzip dest="." src="./nm.zip" overwrite="false" />
+		<unzip dest="." src="./nm.zip" overwrite="true" />
 		<copy file="./tmp/sdk.properties" tofile="sdk.properties" overwrite="true" />
 		<copy todir="${src}" overwrite="true">
 			<fileset dir="./tmp">
-				<include name="**/${moduleName}.java" />
 				<include name="**/*Hooks.java" />
                 <include name="**/*HooksNonTransient.java" />
                 <include name="**/*HooksTransient.java" />
@@ -113,6 +111,7 @@
 			</zipfileset>
 			<fileset dir="${src}">
 				<include name="**/*.png" />
+				<include name="**/*.svg" />
 				<include name="**/META-INF/**" />
 			</fileset>
 			<fileset dir="">
@@ -133,6 +132,7 @@
 			</zipfileset>
 			<fileset dir="${src}">
 				<include name="**/*.png" />
+				<include name="**/*.svg" />
 				<include name="**/META-INF/**" />
 			</fileset>
 			<fileset dir="">
@@ -175,7 +175,7 @@
 	<target name="unrelease" description="Sets the NativeModule unreleased" depends="_unreleaseWin, _unreleaseUnix" />
 
 	<target name="compile" depends="init" description="Compile the source">
-		<javac srcdir="${src}" destdir="${build}" classpathref="classpath" debug="true" encoding="UTF-8"/>
+		<javac includeantruntime="false"  srcdir="${src}" destdir="${build}" classpathref="classpath" debug="true" encoding="UTF-8"/>
 	</target>
 
 	<target name="clean" description="Clean up">

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 - 2017, Apinauten GmbH
+ * Copyright (c) 2011 - 2018, Apinauten GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -24,16 +24,8 @@
  */
 package com.apiomat.nativemodule.cognitiveservices;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.apiomat.nativemodule.*;
-
 
 import com.apiomat.nativemodule.basics.*;
-import com.apiomat.nativemodule.AuthState;
 /**
 * Generated class for your TranslatedDetection data model
 *
@@ -41,15 +33,15 @@ import com.apiomat.nativemodule.AuthState;
 * EVERYTHING ELSE WILL GET OVERWRITTEN!
 *
 */
-@SuppressWarnings( "unused" )
-@Model( moduleName = "CognitiveServices",
+@java.lang.SuppressWarnings( "unused" )
+@com.apiomat.nativemodule.Model( moduleName = "CognitiveServices",
     hooksClassNameTransient = "com.apiomat.nativemodule.cognitiveservices.TranslatedDetectionHooksTransient", 
     hooksClassNameNonTransient = "com.apiomat.nativemodule.cognitiveservices.TranslatedDetectionHooksNonTransient", 
-            isTransient = false,     requiredUserRoleCreate=UserRole.User, requiredUserRoleRead=UserRole.User,
-    requiredUserRoleWrite=UserRole.Owner, restrictResourceAccess=false,
+            isTransient = false,     requiredUserRoleCreate=com.apiomat.nativemodule.UserRole.User, requiredUserRoleRead=com.apiomat.nativemodule.UserRole.User,
+    requiredUserRoleWrite=com.apiomat.nativemodule.UserRole.Owner, restrictResourceAccess=false,
     allowedRolesCreate={}, allowedRolesRead={},
     allowedRolesWrite={}, allowedRolesGrant={})
-public class TranslatedDetection extends AbstractClientDataModel implements IModel<TranslatedDetection>
+public class TranslatedDetection extends com.apiomat.nativemodule.AbstractClientDataModel implements com.apiomat.nativemodule.IModel<com.apiomat.nativemodule.cognitiveservices.TranslatedDetection>
 {
     /**
      * Contains the name of the module that this model belongs to
@@ -61,8 +53,8 @@ public class TranslatedDetection extends AbstractClientDataModel implements IMod
     public static final String MODEL_NAME = "TranslatedDetection";
 
     /** class specific attributes */
-    private List<String> detections = new ArrayList<>();
-    private List<String> translations = new ArrayList<>();
+    private java.util.List<String> detections = new java.util.ArrayList<>();
+    private java.util.List<String> translations = new java.util.ArrayList<>();
     /**
      * Protected constructor; to create a new instance, use the createObject() method
      */
@@ -87,22 +79,22 @@ public class TranslatedDetection extends AbstractClientDataModel implements IMod
         return MODEL_NAME;
     }
 
-    public List<String> getDetections()
+    public java.util.List<String> getDetections()
     {
          return this.detections;
     }
 
-    public void setDetections( List<String> arg )
+    public void setDetections( java.util.List<String> arg )
     {
         this.detections = arg;
     }
 
-    public List<String> getTranslations()
+    public java.util.List<String> getTranslations()
     {
          return this.translations;
     }
 
-    public void setTranslations( List<String> arg )
+    public void setTranslations( java.util.List<String> arg )
     {
         this.translations = arg;
     }

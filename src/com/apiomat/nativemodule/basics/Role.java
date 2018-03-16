@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 - 2017, Apinauten GmbH
+ * Copyright (c) 2011 - 2018, Apinauten GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -24,16 +24,8 @@
  */
 package com.apiomat.nativemodule.basics;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.apiomat.nativemodule.*;
-
 
 import com.apiomat.nativemodule.basics.*;
-import com.apiomat.nativemodule.AuthState;
 /**
 * Generated class for your Role data model
 *
@@ -41,9 +33,9 @@ import com.apiomat.nativemodule.AuthState;
 * EVERYTHING ELSE WILL GET OVERWRITTEN!
 *
 */
-@SuppressWarnings( "unused" )
-@Model( moduleName = "Basics" )
-public class Role extends AbstractClientDataModel implements IModel<Role>
+@java.lang.SuppressWarnings( "unused" )
+@com.apiomat.nativemodule.Model( moduleName = "Basics" )
+public class Role extends com.apiomat.nativemodule.AbstractClientDataModel implements com.apiomat.nativemodule.IModel<com.apiomat.nativemodule.basics.Role>
 {
     /**
      * Contains the name of the module that this model belongs to
@@ -55,8 +47,8 @@ public class Role extends AbstractClientDataModel implements IModel<Role>
     public static final String MODEL_NAME = "Role";
 
     /** class specific attributes */
-    private List<String> members = new ArrayList<>();
-    @Mandatory
+    private java.util.List<String> members = new java.util.ArrayList<>();
+    @com.apiomat.nativemodule.Mandatory
     private String name = null;
     /**
      * Protected constructor; to create a new instance, use the createObject() method
@@ -82,12 +74,12 @@ public class Role extends AbstractClientDataModel implements IModel<Role>
         return MODEL_NAME;
     }
 
-    public List<String> getMembers()
+    public java.util.List<String> getMembers()
     {
          return this.members;
     }
 
-    public void setMembers( List<String> arg )
+    public void setMembers( java.util.List<String> arg )
     {
         this.members = arg;
     }

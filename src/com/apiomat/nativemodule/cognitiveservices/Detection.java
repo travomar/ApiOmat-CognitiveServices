@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 - 2017, Apinauten GmbH
+ * Copyright (c) 2011 - 2018, Apinauten GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -24,16 +24,8 @@
  */
 package com.apiomat.nativemodule.cognitiveservices;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.apiomat.nativemodule.*;
-
 
 import com.apiomat.nativemodule.basics.*;
-import com.apiomat.nativemodule.AuthState;
 /**
 * Generated class for your Detection data model
 *
@@ -41,15 +33,15 @@ import com.apiomat.nativemodule.AuthState;
 * EVERYTHING ELSE WILL GET OVERWRITTEN!
 *
 */
-@SuppressWarnings( "unused" )
-@Model( moduleName = "CognitiveServices",
+@java.lang.SuppressWarnings( "unused" )
+@com.apiomat.nativemodule.Model( moduleName = "CognitiveServices",
     hooksClassNameTransient = "com.apiomat.nativemodule.cognitiveservices.DetectionHooksTransient", 
     hooksClassNameNonTransient = "com.apiomat.nativemodule.cognitiveservices.DetectionHooksNonTransient", 
-            isTransient = false,     requiredUserRoleCreate=UserRole.User, requiredUserRoleRead=UserRole.User,
-    requiredUserRoleWrite=UserRole.Owner, restrictResourceAccess=false,
+            isTransient = false,     requiredUserRoleCreate=com.apiomat.nativemodule.UserRole.User, requiredUserRoleRead=com.apiomat.nativemodule.UserRole.User,
+    requiredUserRoleWrite=com.apiomat.nativemodule.UserRole.Owner, restrictResourceAccess=false,
     allowedRolesCreate={}, allowedRolesRead={},
     allowedRolesWrite={}, allowedRolesGrant={})
-public class Detection extends AbstractClientDataModel implements IModel<Detection>
+public class Detection extends com.apiomat.nativemodule.AbstractClientDataModel implements com.apiomat.nativemodule.IModel<com.apiomat.nativemodule.cognitiveservices.Detection>
 {
     /**
      * Contains the name of the module that this model belongs to

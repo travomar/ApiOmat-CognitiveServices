@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 - 2017, Apinauten GmbH
+ * Copyright (c) 2011 - 2018, Apinauten GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -24,16 +24,8 @@
  */
 package com.apiomat.nativemodule.cognitiveservices;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.apiomat.nativemodule.*;
-
 
 import com.apiomat.nativemodule.basics.*;
-import com.apiomat.nativemodule.AuthState;
 /**
 * Generated class for your ObjectPicture data model
 *
@@ -41,15 +33,15 @@ import com.apiomat.nativemodule.AuthState;
 * EVERYTHING ELSE WILL GET OVERWRITTEN!
 *
 */
-@SuppressWarnings( "unused" )
-@Model( moduleName = "CognitiveServices",
+@java.lang.SuppressWarnings( "unused" )
+@com.apiomat.nativemodule.Model( moduleName = "CognitiveServices",
     hooksClassNameTransient = "com.apiomat.nativemodule.cognitiveservices.ObjectPictureHooksTransient", 
     hooksClassNameNonTransient = "com.apiomat.nativemodule.cognitiveservices.ObjectPictureHooksNonTransient", 
-            isTransient = true,     requiredUserRoleCreate=UserRole.User, requiredUserRoleRead=UserRole.User,
-    requiredUserRoleWrite=UserRole.Owner, restrictResourceAccess=false,
+            isTransient = true,     requiredUserRoleCreate=com.apiomat.nativemodule.UserRole.User, requiredUserRoleRead=com.apiomat.nativemodule.UserRole.User,
+    requiredUserRoleWrite=com.apiomat.nativemodule.UserRole.Owner, restrictResourceAccess=false,
     allowedRolesCreate={}, allowedRolesRead={},
     allowedRolesWrite={}, allowedRolesGrant={})
-public class ObjectPicture extends AbstractClientDataModel implements IModel<ObjectPicture>
+public class ObjectPicture extends com.apiomat.nativemodule.AbstractClientDataModel implements com.apiomat.nativemodule.IModel<com.apiomat.nativemodule.cognitiveservices.ObjectPicture>
 {
     /**
      * Contains the name of the module that this model belongs to
@@ -61,7 +53,7 @@ public class ObjectPicture extends AbstractClientDataModel implements IModel<Obj
     public static final String MODEL_NAME = "ObjectPicture";
 
     /** class specific attributes */
-    @StaticData( type = com.apiomat.nativemodule.StaticData.Type.Image )
+    @com.apiomat.nativemodule.StaticData( type = com.apiomat.nativemodule.StaticData.Type.Image )
     private String contentURL;
     /**
      * Protected constructor; to create a new instance, use the createObject() method
@@ -89,21 +81,25 @@ public class ObjectPicture extends AbstractClientDataModel implements IModel<Obj
 
     public String getContentURL( )
     {
-        String url;
-        url = this.contentURL;
-        return url;
+        return this.contentURL;
     }
 
     public byte[] loadContent( )
     {
-        String resUrl = getContentURL()+".img";
-        return loadResource(resUrl);
+        final String resUrl = getContentURL();
+        return getData( com.apiomat.nativemodule.IResourceMethods.ResourceType.IMAGE, resUrl);
+    }
+
+    public java.io.InputStream loadContentAsStream( )
+    {
+        final String resUrl = getContentURL();
+        return getDataAsStream( com.apiomat.nativemodule.IResourceMethods.ResourceType.IMAGE, resUrl);
     }
 
     public String getContentURL( String apiKey, String system, int width, int height, 
         String backgroundColorAsHex, Double alpha, String format )
     {
-        final StringBuilder additionalParameters = new StringBuilder();
+        final java.lang.StringBuilder additionalParameters = new java.lang.StringBuilder();
         additionalParameters.append( ".img?apiKey=" );
         additionalParameters.append( apiKey );
         additionalParameters.append( "&system=" );
@@ -144,7 +140,18 @@ public class ObjectPicture extends AbstractClientDataModel implements IModel<Obj
         this.contentURL = url;
     }
 
+    /**
+     * @deprecated Use {@link #postContent( java.io.InputStream data , String fileName, String format )}
+     */
+    @Deprecated
     public String postContent( byte[] data , String fileName, String format )
+    {
+        String url = saveResource( data, true, fileName, format );
+        setContentURL( url );
+        return url;
+    }
+
+    public String postContent( java.io.InputStream data , String fileName, String format )
     {
         String url = saveResource( data, true, fileName, format );
         setContentURL( url );

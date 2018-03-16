@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 - 2017, Apinauten GmbH
+ * Copyright (c) 2011 - 2018, Apinauten GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -24,16 +24,8 @@
  */
 package com.apiomat.nativemodule.cognitiveservices;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.apiomat.nativemodule.*;
-
 
 import com.apiomat.nativemodule.basics.*;
-import com.apiomat.nativemodule.AuthState;
 /**
 * Generated default class representing a user in your app
 *
@@ -41,15 +33,15 @@ import com.apiomat.nativemodule.AuthState;
 * EVERYTHING ELSE WILL GET OVERWRITTEN!
 *
 */
-@SuppressWarnings( "unused" )
-@Model( moduleName = "CognitiveServices",
+@java.lang.SuppressWarnings( "unused" )
+@com.apiomat.nativemodule.Model( moduleName = "CognitiveServices",
     hooksClassNameTransient = "com.apiomat.nativemodule.cognitiveservices.LanguageUserHooksTransient", 
     hooksClassNameNonTransient = "com.apiomat.nativemodule.cognitiveservices.LanguageUserHooksNonTransient", 
-            isTransient = false,     requiredUserRoleCreate=UserRole.Guest, requiredUserRoleRead=UserRole.User,
-    requiredUserRoleWrite=UserRole.Owner, restrictResourceAccess=false,
+            isTransient = false,     requiredUserRoleCreate=com.apiomat.nativemodule.UserRole.Guest, requiredUserRoleRead=com.apiomat.nativemodule.UserRole.User,
+    requiredUserRoleWrite=com.apiomat.nativemodule.UserRole.Owner, restrictResourceAccess=false,
     allowedRolesCreate={}, allowedRolesRead={},
     allowedRolesWrite={}, allowedRolesGrant={})
-public class LanguageUser extends User
+public class LanguageUser extends com.apiomat.nativemodule.basics.User
 {
     /**
      * Contains the name of the module that this model belongs to

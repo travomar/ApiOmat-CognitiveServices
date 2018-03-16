@@ -93,6 +93,48 @@
             <systemPath>${project.basedir}/lib/apache-httpclient/httpmime-4.2.3.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.6</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/commons-codec-1.6.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/commons-logging-1.1.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>fluent-hc</groupId>
+            <artifactId>fluent-hc</artifactId>
+            <version>4.3.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/fluent-hc-4.3.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>httpclient</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.5</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/httpclient-4.3.5.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>httpcore</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.3.2</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/httpcore-4.3.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>httpmime</groupId>
+            <artifactId>httpmime</artifactId>
+            <version>4.2.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/httpmime-4.2.3.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>jersey-core</groupId>
             <artifactId>jersey-core</artifactId>
             <version>1.19</version>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 - 2017, Apinauten GmbH
+ * Copyright (c) 2011 - 2018, Apinauten GmbH
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -24,16 +24,8 @@
  */
 package com.apiomat.nativemodule.basics;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.InvocationTargetException;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-
-import com.apiomat.nativemodule.*;
-
 
 import com.apiomat.nativemodule.basics.*;
-import com.apiomat.nativemodule.AuthState;
 /**
 * Generated default class representing a user in your app
 *
@@ -41,9 +33,9 @@ import com.apiomat.nativemodule.AuthState;
 * EVERYTHING ELSE WILL GET OVERWRITTEN!
 *
 */
-@SuppressWarnings( "unused" )
-@Model( moduleName = "Basics" )
-public class User extends AbstractClientDataModel implements IModel<User>
+@java.lang.SuppressWarnings( "unused" )
+@com.apiomat.nativemodule.Model( moduleName = "Basics" )
+public class User extends com.apiomat.nativemodule.AbstractClientDataModel implements com.apiomat.nativemodule.IModel<com.apiomat.nativemodule.basics.User>
 {
     /**
      * Contains the name of the module that this model belongs to
@@ -55,15 +47,14 @@ public class User extends AbstractClientDataModel implements IModel<User>
     public static final String MODEL_NAME = "User";
 
     /** class specific attributes */
-    private Date dateOfBirth = null;
-    private Map<String, Object> dynamicAttributes = new ConcurrentHashMap<>();
+    private java.util.Date dateOfBirth = null;
+    private java.util.Map<String, Object> dynamicAttributes = new java.util.concurrent.ConcurrentHashMap<>();
     private String firstName = null;
     private String lastName = null;
     private double[] loc;
     private String password = null;
-    private String salt = null;
     private String sessionToken = null;
-    @Mandatory
+    @com.apiomat.nativemodule.Mandatory
     private String userName = null;
     /**
      * Protected constructor; to create a new instance, use the createObject() method
@@ -89,22 +80,22 @@ public class User extends AbstractClientDataModel implements IModel<User>
         return MODEL_NAME;
     }
 
-    public Date getDateOfBirth()
+    public java.util.Date getDateOfBirth()
     {
          return this.dateOfBirth;
     }
 
-    public void setDateOfBirth( Date arg )
+    public void setDateOfBirth( java.util.Date arg )
     {
         this.dateOfBirth = arg;
     }
 
-    public Map<String, Object> getDynamicAttributes()
+    public java.util.Map<String, Object> getDynamicAttributes()
     {
        return this.dynamicAttributes;
     }
 
-    public void setDynamicAttributes( Map<String, Object> map )
+    public void setDynamicAttributes( java.util.Map<String, Object> map )
     {
        this.dynamicAttributes = map;
     }
@@ -181,16 +172,6 @@ public class User extends AbstractClientDataModel implements IModel<User>
     public void setPassword( String arg )
     {
         this.password = arg;
-    }
-
-    public String getSalt()
-    {
-         return this.salt;
-    }
-
-    public void setSalt( String arg )
-    {
-        this.salt = arg;
     }
 
     public String getSessionToken()
