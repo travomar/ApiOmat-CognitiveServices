@@ -44,7 +44,7 @@ import com.apiomat.nativemodule.NativeModuleConfig.Type;
  *
  */
 @Module( description = "ApiOmat module that connects to MS Cognitive Services",
-	usedModules = { }, securityPermissions = { } )
+	usedModules = { "Basics" }, securityPermissions = { } )
 public class CognitiveServices implements IModule
 {
 	static IApplicationConfigProxy APP_CONFIG_PROXY;

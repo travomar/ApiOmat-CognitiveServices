@@ -55,6 +55,7 @@ public class Picture extends com.apiomat.nativemodule.AbstractClientDataModel im
     /** class specific attributes */
     @com.apiomat.nativemodule.StaticData( type = com.apiomat.nativemodule.StaticData.Type.Image )
     private String contentURL;
+    private String testString = null;
     /**
      * Protected constructor; to create a new instance, use the createObject() method
      */
@@ -156,6 +157,16 @@ public class Picture extends com.apiomat.nativemodule.AbstractClientDataModel im
         String url = saveResource( data, true, fileName, format );
         setContentURL( url );
         return url;
+    }
+
+    public String getTestString()
+    {
+         return this.testString;
+    }
+
+    public void setTestString( String arg )
+    {
+        this.testString = arg;
     }
 
 }
