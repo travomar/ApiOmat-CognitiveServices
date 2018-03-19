@@ -37,8 +37,8 @@ import com.apiomat.nativemodule.basics.*;
 @com.apiomat.nativemodule.Model( moduleName = "CognitiveServices",
     hooksClassNameTransient = "com.apiomat.nativemodule.cognitiveservices.PictureHooksTransient", 
     hooksClassNameNonTransient = "com.apiomat.nativemodule.cognitiveservices.PictureHooksNonTransient", 
-            isTransient = true,     requiredUserRoleCreate=com.apiomat.nativemodule.UserRole.User, requiredUserRoleRead=com.apiomat.nativemodule.UserRole.User,
-    requiredUserRoleWrite=com.apiomat.nativemodule.UserRole.Owner, restrictResourceAccess=false,
+            isTransient = true,     requiredUserRoleCreate=com.apiomat.nativemodule.UserRole.Guest, requiredUserRoleRead=com.apiomat.nativemodule.UserRole.Guest,
+    requiredUserRoleWrite=com.apiomat.nativemodule.UserRole.Guest, restrictResourceAccess=false,
     allowedRolesCreate={}, allowedRolesRead={},
     allowedRolesWrite={}, allowedRolesGrant={})
 public class Picture extends com.apiomat.nativemodule.AbstractClientDataModel implements com.apiomat.nativemodule.IModel<com.apiomat.nativemodule.cognitiveservices.Picture>
