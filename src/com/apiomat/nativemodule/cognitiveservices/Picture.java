@@ -54,7 +54,7 @@ public class Picture extends com.apiomat.nativemodule.AbstractClientDataModel im
 
     /** class specific attributes */
     @com.apiomat.nativemodule.StaticData( type = com.apiomat.nativemodule.StaticData.Type.Image )
-    private String contentURL;
+    private String content2URL;
     private String testString = null;
     /**
      * Protected constructor; to create a new instance, use the createObject() method
@@ -80,24 +80,24 @@ public class Picture extends com.apiomat.nativemodule.AbstractClientDataModel im
         return MODEL_NAME;
     }
 
-    public String getContentURL( )
+    public String getContent2URL( )
     {
-        return this.contentURL;
+        return this.content2URL;
     }
 
-    public byte[] loadContent( )
+    public byte[] loadContent2( )
     {
-        final String resUrl = getContentURL();
+        final String resUrl = getContent2URL();
         return getData( com.apiomat.nativemodule.IResourceMethods.ResourceType.IMAGE, resUrl);
     }
 
-    public java.io.InputStream loadContentAsStream( )
+    public java.io.InputStream loadContent2AsStream( )
     {
-        final String resUrl = getContentURL();
+        final String resUrl = getContent2URL();
         return getDataAsStream( com.apiomat.nativemodule.IResourceMethods.ResourceType.IMAGE, resUrl);
     }
 
-    public String getContentURL( String apiKey, String system, int width, int height, 
+    public String getContent2URL( String apiKey, String system, int width, int height, 
         String backgroundColorAsHex, Double alpha, String format )
     {
         final java.lang.StringBuilder additionalParameters = new java.lang.StringBuilder();
@@ -125,37 +125,37 @@ public class Picture extends com.apiomat.nativemodule.AbstractClientDataModel im
             additionalParameters.append( "&format=" );
             additionalParameters.append( format );
         }
-        return getContentURL( ) + additionalParameters;
+        return getContent2URL( ) + additionalParameters;
     }
 
-    public byte[] loadContent( String apiKey, String system, int width, int height, 
+    public byte[] loadContent2( String apiKey, String system, int width, int height, 
         String backgroundColorAsHex, Double alpha, String format )
     {
-        final String resUrl = getContentURL( apiKey, system, width, height, 
+        final String resUrl = getContent2URL( apiKey, system, width, height, 
             backgroundColorAsHex, alpha, format );
         return loadResource(resUrl);
     }
 
-    public void setContentURL( String url ) 
+    public void setContent2URL( String url ) 
     {
-        this.contentURL = url;
+        this.content2URL = url;
     }
 
     /**
-     * @deprecated Use {@link #postContent( java.io.InputStream data , String fileName, String format )}
+     * @deprecated Use {@link #postContent2( java.io.InputStream data , String fileName, String format )}
      */
     @Deprecated
-    public String postContent( byte[] data , String fileName, String format )
+    public String postContent2( byte[] data , String fileName, String format )
     {
         String url = saveResource( data, true, fileName, format );
-        setContentURL( url );
+        setContent2URL( url );
         return url;
     }
 
-    public String postContent( java.io.InputStream data , String fileName, String format )
+    public String postContent2( java.io.InputStream data , String fileName, String format )
     {
         String url = saveResource( data, true, fileName, format );
-        setContentURL( url );
+        setContent2URL( url );
         return url;
     }
 
