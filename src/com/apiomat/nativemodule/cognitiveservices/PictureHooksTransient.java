@@ -101,86 +101,91 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 		CognitiveServices.AOM.log( appName, "jsonResultFaceString: " + jsonResultFaceString, false );
 
 		/* Go through all detections in the result */
+		if ( jsonResultEmotionString!=null && jsonResultEmotionString.length()>0) {
 
-		JSONArray jsonResultEmotion = new JSONArray( jsonResultEmotionString );
-		JSONArray jsonResultFace = new JSONArray( jsonResultFaceString );
-		for ( int i = 0; i < jsonResultEmotion.length( ); i++ )
-		{
-			CognitiveServices.AOM.log( appName, "got a detection from the MS API - turning into ApiOmat object...",
-				false );
-			JSONObject emotionJson = jsonResultEmotion.getJSONObject( i );
 
-			JSONObject emotionFaceRectangleJson = emotionJson.getJSONObject( "faceRectangle" );
-			Rectangle rectangle = new Rectangle( emotionFaceRectangleJson );
-
-			JSONObject emotionScoresJson = emotionJson.getJSONObject( "scores" );
-			Emotion emotion = new Emotion( emotionScoresJson );
-
-			CognitiveServices.AOM.log( appName, "emotion values: " + emotion.toString( ), false );
-			CognitiveServices.AOM.log( appName, "calculated happiness: " + emotion.calculateHappiness( ), false );
-
-			/* Create detection object and set face rectangle and emotion */
-			Detection detection = new Detection( );
-			detection.setPicId( obj.getForeignId( ) );
-			detection.setTop( rectangle.getTop( ) );
-			detection.setWidth( rectangle.getWidth( ) );
-			detection.setLeft( rectangle.getLeft( ) );
-			detection.setHeight( rectangle.getHeight( ) );
-			detection.setHappiness( emotion.calculateHappiness( ) );
-
-			/* check if face result has a result for the same rectangle */
-			for ( int j = 0; j < jsonResultFace.length( ); j++ )
+			JSONArray jsonResultEmotion = new JSONArray( jsonResultEmotionString );
+			JSONArray jsonResultFace = new JSONArray( jsonResultFaceString );
+			for ( int i = 0; i < jsonResultEmotion.length( ); i++ )
 			{
-				JSONObject faceJson = jsonResultFace.getJSONObject( j );
-				JSONObject faceRectangleJson = faceJson.getJSONObject( "faceRectangle" );
-				Rectangle rectangleFace = new Rectangle( faceRectangleJson );
-				if ( rectangle.equals( rectangleFace ) )
+				CognitiveServices.AOM.log( appName, "got a detection from the MS API - turning into ApiOmat object...",
+					false );
+				JSONObject emotionJson = jsonResultEmotion.getJSONObject( i );
+
+				JSONObject emotionFaceRectangleJson = emotionJson.getJSONObject( "faceRectangle" );
+				Rectangle rectangle = new Rectangle( emotionFaceRectangleJson );
+
+				JSONObject emotionScoresJson = emotionJson.getJSONObject( "scores" );
+				Emotion emotion = new Emotion( emotionScoresJson );
+
+				CognitiveServices.AOM.log( appName, "emotion values: " + emotion.toString( ), false );
+				CognitiveServices.AOM.log( appName, "calculated happiness: " + emotion.calculateHappiness( ), false );
+
+				/* Create detection object and set face rectangle and emotion */
+				Detection detection = new Detection( );
+				detection.setPicId( obj.getForeignId( ) );
+				detection.setTop( rectangle.getTop( ) );
+				detection.setWidth( rectangle.getWidth( ) );
+				detection.setLeft( rectangle.getLeft( ) );
+				detection.setHeight( rectangle.getHeight( ) );
+				detection.setHappiness( emotion.calculateHappiness( ) );
+
+				/* check if face result has a result for the same rectangle */
+				for ( int j = 0; j < jsonResultFace.length( ); j++ )
 				{
-					/* set gender and age */
-					JSONObject faceAttributes = faceJson.getJSONObject( "faceAttributes" );
-					String gender = faceAttributes.getString( "gender" );
-					CognitiveServices.AOM.log( appName, "found gender: " + gender, false );
-					long age = new Double( faceAttributes.getDouble( "age" ) ).longValue( );
-					CognitiveServices.AOM.log( appName, "found age: " + age, false );
-					detection.setGender( gender );
-					detection.setAge( age );
-
-					String faceId = faceJson.getString( "faceId" );
-					/* identify (for name) */
-					String identifyRequest = RequestHelper.identifyRequest( subKeyFace, picUrl, faceId );
-					if ( identifyRequest != null && identifyRequest.length( ) > 0 && identifyRequest.startsWith( "[" ) )
+					JSONObject faceJson = jsonResultFace.getJSONObject( j );
+					JSONObject faceRectangleJson = faceJson.getJSONObject( "faceRectangle" );
+					Rectangle rectangleFace = new Rectangle( faceRectangleJson );
+					if ( rectangle.equals( rectangleFace ) )
 					{
-						JSONArray identifyJsonArray = new JSONArray( identifyRequest );
-						JSONObject identifyJsonObject = identifyJsonArray.getJSONObject( 0 );
-						JSONArray candidatesJson = identifyJsonObject.getJSONArray( "candidates" );
-						if ( candidatesJson.length( ) > 0 )
+						/* set gender and age */
+						JSONObject faceAttributes = faceJson.getJSONObject( "faceAttributes" );
+						String gender = faceAttributes.getString( "gender" );
+						CognitiveServices.AOM.log( appName, "found gender: " + gender, false );
+						long age = new Double( faceAttributes.getDouble( "age" ) ).longValue( );
+						CognitiveServices.AOM.log( appName, "found age: " + age, false );
+						detection.setGender( gender );
+						detection.setAge( age );
+
+						String faceId = faceJson.getString( "faceId" );
+						/* identify (for name) */
+						String identifyRequest = RequestHelper.identifyRequest( subKeyFace, picUrl, faceId );
+						if ( identifyRequest != null && identifyRequest.length( ) > 0 && identifyRequest.startsWith( "[" ) )
 						{
-							JSONObject candidate = candidatesJson.getJSONObject( 0 );
-							String personId = candidate.getString( "personId" );
+							JSONArray identifyJsonArray = new JSONArray( identifyRequest );
+							JSONObject identifyJsonObject = identifyJsonArray.getJSONObject( 0 );
+							JSONArray candidatesJson = identifyJsonObject.getJSONArray( "candidates" );
+							if ( candidatesJson.length( ) > 0 )
+							{
+								JSONObject candidate = candidatesJson.getJSONObject( 0 );
+								String personId = candidate.getString( "personId" );
 
-							/* get person with name */
-							String personJsonString = RequestHelper.personRequest( subKeyFace, picUrl, personId );
-							JSONObject personJson = new JSONObject( personJsonString );
-							String personName = personJson.getString( "name" );
-							CognitiveServices.AOM.log( appName, "found name: " + personName, false );
+								/* get person with name */
+								String personJsonString = RequestHelper.personRequest( subKeyFace, picUrl, personId );
+								JSONObject personJson = new JSONObject( personJsonString );
+								String personName = personJson.getString( "name" );
+								CognitiveServices.AOM.log( appName, "found name: " + personName, false );
 
-							/* set found name */
-							detection.setName( personName );
+								/* set found name */
+								detection.setName( personName );
+							}
+							else
+							{
+								detection.setName( "?" );
+							}
 						}
 						else
 						{
 							detection.setName( "?" );
 						}
 					}
-					else
-					{
-						detection.setName( "?" );
-					}
 				}
-			}
 
-			/* save */
-			detection.save( );
+				/* save */
+				detection.save( );
+			} 
+		} else {
+			CognitiveServices.AOM.log( appName,"no jsonResultEmotionString", false );
 		}
 	}
 
