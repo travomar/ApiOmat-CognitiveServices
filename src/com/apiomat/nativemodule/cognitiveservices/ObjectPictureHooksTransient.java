@@ -63,7 +63,7 @@ public class ObjectPictureHooksTransient<T extends ObjectPicture> implements IMo
 
 		/* Take picture URL from PUT object */
 
-		String picUrl = "http://studio.apiomat.enterprises" + obj.getContentURL( ) + ".img?apiKey=" + r.getApiKey( ) +
+		String picUrl = "https://studio.apiomat.enterprises" + obj.getContentURL( ) + ".img?apiKey=" + r.getApiKey( ) +
 			"&system=" + r.getSystem( );
 		CognitiveServices.AOM.log( appName, "pic url: " + picUrl, false );
 
