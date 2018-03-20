@@ -24,150 +24,149 @@
  */
 package com.apiomat.nativemodule.cognitiveservices;
 
+
+import com.apiomat.nativemodule.basics.*;
 /**
- * Generated class for your Picture data model
- *
- * DO NOT CHANGE ANY CODE EXCEPT CLASS ANNOTATIONS OR CLASS ATTRIBUTES HERE!
- * EVERYTHING ELSE WILL GET OVERWRITTEN!
- *
- */
+* Generated class for your Picture data model
+*
+* DO NOT CHANGE ANY CODE EXCEPT CLASS ANNOTATIONS OR CLASS ATTRIBUTES HERE!
+* EVERYTHING ELSE WILL GET OVERWRITTEN!
+*
+*/
 @java.lang.SuppressWarnings( "unused" )
 @com.apiomat.nativemodule.Model( moduleName = "CognitiveServices",
-	hooksClassNameTransient = "com.apiomat.nativemodule.cognitiveservices.PictureHooksTransient",
-	hooksClassNameNonTransient = "com.apiomat.nativemodule.cognitiveservices.PictureHooksNonTransient",
-	isTransient = false, requiredUserRoleCreate = com.apiomat.nativemodule.UserRole.Guest,
-	requiredUserRoleRead = com.apiomat.nativemodule.UserRole.Guest,
-	requiredUserRoleWrite = com.apiomat.nativemodule.UserRole.Guest, restrictResourceAccess = false,
-	allowedRolesCreate = { }, allowedRolesRead = { },
-	allowedRolesWrite = { }, allowedRolesGrant = { } )
-public class Picture extends com.apiomat.nativemodule.AbstractClientDataModel
-	implements com.apiomat.nativemodule.IModel<com.apiomat.nativemodule.cognitiveservices.Picture>
+    hooksClassNameTransient = "com.apiomat.nativemodule.cognitiveservices.PictureHooksTransient", 
+    hooksClassNameNonTransient = "com.apiomat.nativemodule.cognitiveservices.PictureHooksNonTransient", 
+            isTransient = false,     requiredUserRoleCreate=com.apiomat.nativemodule.UserRole.Guest, requiredUserRoleRead=com.apiomat.nativemodule.UserRole.Guest,
+    requiredUserRoleWrite=com.apiomat.nativemodule.UserRole.Guest, restrictResourceAccess=false,
+    allowedRolesCreate={}, allowedRolesRead={},
+    allowedRolesWrite={}, allowedRolesGrant={})
+public class Picture extends com.apiomat.nativemodule.AbstractClientDataModel implements com.apiomat.nativemodule.IModel<com.apiomat.nativemodule.cognitiveservices.Picture>
 {
-	/**
-	 * Contains the name of the module that this model belongs to
-	 */
-	public static final String MODULE_NAME = "CognitiveServices";
-	/**
-	 * Contains the name of the model
-	 */
-	public static final String MODEL_NAME = "Picture";
+    /**
+     * Contains the name of the module that this model belongs to
+     */
+    public static final String MODULE_NAME = "CognitiveServices";
+    /**
+     * Contains the name of the model
+     */
+    public static final String MODEL_NAME = "Picture";
 
-	/** class specific attributes */
-	@com.apiomat.nativemodule.StaticData( type = com.apiomat.nativemodule.StaticData.Type.Image )
-	private String contentURL;
-	private String testString = null;
+    /** class specific attributes */
+    @com.apiomat.nativemodule.StaticData( type = com.apiomat.nativemodule.StaticData.Type.Image )
+    private String contentURL;
+    private String testString = null;
+    /**
+     * Protected constructor; to create a new instance, use the createObject() method
+     */
+    public Picture ()
+    {}
 
-	/**
-	 * Protected constructor; to create a new instance, use the createObject() method
-	 */
-	public Picture( )
-	{}
+    /**
+     * Returns the name of the module where this class belongs to
+     */
+    @Override
+    public String getModuleName( )
+    {
+        return MODULE_NAME;
+    }
 
-	/**
-	 * Returns the name of the module where this class belongs to
-	 */
-	@Override
-	public String getModuleName( )
-	{
-		return MODULE_NAME;
-	}
+    /**
+     * Returns the name of the model
+     */
+    @Override
+    public String getModelName( )
+    {
+        return MODEL_NAME;
+    }
 
-	/**
-	 * Returns the name of the model
-	 */
-	@Override
-	public String getModelName( )
-	{
-		return MODEL_NAME;
-	}
+    public String getContentURL( )
+    {
+        return this.contentURL;
+    }
 
-	public String getContentURL( )
-	{
-		return this.contentURL;
-	}
+    public byte[] loadContent( )
+    {
+        final String resUrl = getContentURL();
+        return getData( com.apiomat.nativemodule.IResourceMethods.ResourceType.IMAGE, resUrl);
+    }
 
-	public byte[ ] loadContent( )
-	{
-		final String resUrl = getContentURL( );
-		return getData( com.apiomat.nativemodule.IResourceMethods.ResourceType.IMAGE, resUrl );
-	}
+    public java.io.InputStream loadContentAsStream( )
+    {
+        final String resUrl = getContentURL();
+        return getDataAsStream( com.apiomat.nativemodule.IResourceMethods.ResourceType.IMAGE, resUrl);
+    }
 
-	public java.io.InputStream loadContentAsStream( )
-	{
-		final String resUrl = getContentURL( );
-		return getDataAsStream( com.apiomat.nativemodule.IResourceMethods.ResourceType.IMAGE, resUrl );
-	}
+    public String getContentURL( String apiKey, String system, int width, int height, 
+        String backgroundColorAsHex, Double alpha, String format )
+    {
+        final java.lang.StringBuilder additionalParameters = new java.lang.StringBuilder();
+        additionalParameters.append( ".img?apiKey=" );
+        additionalParameters.append( apiKey );
+        additionalParameters.append( "&system=" );
+        additionalParameters.append( system );
+        additionalParameters.append( "&width=" );
+        additionalParameters.append( width );
+        additionalParameters.append( "&height=" );
+        additionalParameters.append( height );
+        
+        if(backgroundColorAsHex != null) 
+        {
+            additionalParameters.append( "&bgcolor=" );
+            additionalParameters.append( backgroundColorAsHex );
+        }
+        if(alpha != null)
+        {
+            additionalParameters.append( "&alpha=" );
+            additionalParameters.append( alpha );
+        }
+        if(format != null)
+        {
+            additionalParameters.append( "&format=" );
+            additionalParameters.append( format );
+        }
+        return getContentURL( ) + additionalParameters;
+    }
 
-	public String getContentURL( String apiKey, String system, int width, int height,
-		String backgroundColorAsHex, Double alpha, String format )
-	{
-		final java.lang.StringBuilder additionalParameters = new java.lang.StringBuilder( );
-		additionalParameters.append( ".img?apiKey=" );
-		additionalParameters.append( apiKey );
-		additionalParameters.append( "&system=" );
-		additionalParameters.append( system );
-		additionalParameters.append( "&width=" );
-		additionalParameters.append( width );
-		additionalParameters.append( "&height=" );
-		additionalParameters.append( height );
+    public byte[] loadContent( String apiKey, String system, int width, int height, 
+        String backgroundColorAsHex, Double alpha, String format )
+    {
+        final String resUrl = getContentURL( apiKey, system, width, height, 
+            backgroundColorAsHex, alpha, format );
+        return loadResource(resUrl);
+    }
 
-		if ( backgroundColorAsHex != null )
-		{
-			additionalParameters.append( "&bgcolor=" );
-			additionalParameters.append( backgroundColorAsHex );
-		}
-		if ( alpha != null )
-		{
-			additionalParameters.append( "&alpha=" );
-			additionalParameters.append( alpha );
-		}
-		if ( format != null )
-		{
-			additionalParameters.append( "&format=" );
-			additionalParameters.append( format );
-		}
-		return getContentURL( ) + additionalParameters;
-	}
+    public void setContentURL( String url ) 
+    {
+        this.contentURL = url;
+    }
 
-	public byte[ ] loadContent( String apiKey, String system, int width, int height,
-		String backgroundColorAsHex, Double alpha, String format )
-	{
-		final String resUrl = getContentURL( apiKey, system, width, height,
-			backgroundColorAsHex, alpha, format );
-		return loadResource( resUrl );
-	}
+    /**
+     * @deprecated Use {@link #postContent( java.io.InputStream data , String fileName, String format )}
+     */
+    @Deprecated
+    public String postContent( byte[] data , String fileName, String format )
+    {
+        String url = saveResource( data, true, fileName, format );
+        setContentURL( url );
+        return url;
+    }
 
-	public void setContentURL( String url )
-	{
-		this.contentURL = url;
-	}
+    public String postContent( java.io.InputStream data , String fileName, String format )
+    {
+        String url = saveResource( data, true, fileName, format );
+        setContentURL( url );
+        return url;
+    }
 
-	/**
-	 * @deprecated Use {@link #postContent( java.io.InputStream data , String fileName, String format )}
-	 */
-	@Deprecated
-	public String postContent( byte[ ] data, String fileName, String format )
-	{
-		String url = saveResource( data, true, fileName, format );
-		setContentURL( url );
-		return url;
-	}
+    public String getTestString()
+    {
+         return this.testString;
+    }
 
-	public String postContent( java.io.InputStream data, String fileName, String format )
-	{
-		String url = saveResource( data, true, fileName, format );
-		setContentURL( url );
-		return url;
-	}
-
-	public String getTestString( )
-	{
-		return this.testString;
-	}
-
-	public void setTestString( String arg )
-	{
-		this.testString = arg;
-	}
+    public void setTestString( String arg )
+    {
+        this.testString = arg;
+    }
 
 }
