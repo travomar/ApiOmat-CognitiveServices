@@ -55,8 +55,6 @@ public class Picture extends com.apiomat.nativemodule.AbstractClientDataModel im
     /** class specific attributes */
     @com.apiomat.nativemodule.StaticData( type = com.apiomat.nativemodule.StaticData.Type.Image )
     private String contentURL;
-    @com.apiomat.nativemodule.StaticData( type = com.apiomat.nativemodule.StaticData.Type.Image )
-    private String glennURL;
     private String testString = null;
     /**
      * Protected constructor; to create a new instance, use the createObject() method
@@ -158,85 +156,6 @@ public class Picture extends com.apiomat.nativemodule.AbstractClientDataModel im
     {
         String url = saveResource( data, true, fileName, format );
         setContentURL( url );
-        return url;
-    }
-
-    public String getGlennURL( )
-    {
-        return this.glennURL;
-    }
-
-    public byte[] loadGlenn( )
-    {
-        final String resUrl = getGlennURL();
-        return getData( com.apiomat.nativemodule.IResourceMethods.ResourceType.IMAGE, resUrl);
-    }
-
-    public java.io.InputStream loadGlennAsStream( )
-    {
-        final String resUrl = getGlennURL();
-        return getDataAsStream( com.apiomat.nativemodule.IResourceMethods.ResourceType.IMAGE, resUrl);
-    }
-
-    public String getGlennURL( String apiKey, String system, int width, int height, 
-        String backgroundColorAsHex, Double alpha, String format )
-    {
-        final java.lang.StringBuilder additionalParameters = new java.lang.StringBuilder();
-        additionalParameters.append( ".img?apiKey=" );
-        additionalParameters.append( apiKey );
-        additionalParameters.append( "&system=" );
-        additionalParameters.append( system );
-        additionalParameters.append( "&width=" );
-        additionalParameters.append( width );
-        additionalParameters.append( "&height=" );
-        additionalParameters.append( height );
-        
-        if(backgroundColorAsHex != null) 
-        {
-            additionalParameters.append( "&bgcolor=" );
-            additionalParameters.append( backgroundColorAsHex );
-        }
-        if(alpha != null)
-        {
-            additionalParameters.append( "&alpha=" );
-            additionalParameters.append( alpha );
-        }
-        if(format != null)
-        {
-            additionalParameters.append( "&format=" );
-            additionalParameters.append( format );
-        }
-        return getGlennURL( ) + additionalParameters;
-    }
-
-    public byte[] loadGlenn( String apiKey, String system, int width, int height, 
-        String backgroundColorAsHex, Double alpha, String format )
-    {
-        final String resUrl = getGlennURL( apiKey, system, width, height, 
-            backgroundColorAsHex, alpha, format );
-        return loadResource(resUrl);
-    }
-
-    public void setGlennURL( String url ) 
-    {
-        this.glennURL = url;
-    }
-
-    /**
-     * @deprecated Use {@link #postGlenn( java.io.InputStream data , String fileName, String format )}
-     */
-    @Deprecated
-    public String postGlenn( byte[] data , String fileName, String format )
-    {
-        String url = saveResource( data, true, fileName, format );
-        setGlennURL( url );
-        return url;
-    }
-
-    public String postGlenn( java.io.InputStream data , String fileName, String format )
-    {
-        String url = saveResource( data, true, fileName, format );
-        setGlennURL( url );
         return url;
     }
 
