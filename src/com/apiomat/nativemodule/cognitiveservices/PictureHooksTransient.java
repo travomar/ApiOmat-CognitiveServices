@@ -62,9 +62,11 @@ public class PictureHooksTransient<T extends Picture> implements IModelHooksTran
 		CognitiveServices.AOM.log( appName,"start do put");
 		CognitiveServices.AOM.log( appName, "foreign ID: " + obj.getForeignId( ), false );
 
+		CognitiveServices.AOM.log( appName, "content url: " + obj.getContentURL( ), false );
+
 		/* Take picture URL from PUT object */
 
-		String picUrl = "https://studio.apiomat.enterprises" + obj.getContentURL( ) + ".img?apiKey=" + r.getApiKey( ) + "&system=" + r.getSystem( );
+		String picUrl = "https://studio.apiomat.enterprises/" + obj.getContentURL( ) + ".img?apiKey=" + r.getApiKey( ) + "&system=" + r.getSystem( );
 		CognitiveServices.AOM.log( appName, "pic url: " + picUrl, false );
 
 		/* Read module configuration */
