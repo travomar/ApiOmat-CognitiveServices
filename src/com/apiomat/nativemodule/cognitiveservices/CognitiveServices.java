@@ -105,6 +105,16 @@ public class CognitiveServices implements IModule
 		order = 4 )
 	public static String SUBSCRIPTION_KEY_TRANSLATE = "CognitiveServices_subscription_key_translate";
 
+	@NativeModuleConfig(
+		datatype = Type.TEXT,
+		example = "apiomat_employee",
+		title = "Default Face API PersonGroup",
+		info = "Default MS Cognitive Services Face API PersonGroup",
+		defaultValue = "apiomatemployee",
+		notifyAllNodes = true,
+		order = 1 )
+	public static String DEFAULT_PERSON_GROUP = "CognitiveServices_defaultpersongroup";
+
 	/**
 	 * This method gets called once in the cluster when the module is uploaded.
 	 */
