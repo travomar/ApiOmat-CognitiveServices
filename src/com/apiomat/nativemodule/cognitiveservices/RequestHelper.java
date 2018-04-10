@@ -10,16 +10,21 @@
  * Philipp Gille */
 package com.apiomat.nativemodule.cognitiveservices;
 
+import java.io.IOException;
 import java.net.URI;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 /**
@@ -37,7 +42,7 @@ public class RequestHelper
 	{
 		String result = null;
 
-		HttpClient httpClient = new DefaultHttpClient( );
+		CloseableHttpClient httpClient = HttpClients.createDefault( );
 
 		try
 		{
@@ -69,6 +74,53 @@ public class RequestHelper
 		catch ( Exception e )
 		{
 			System.out.println( e.getMessage( ) );
+		}
+		return result;
+	}
+
+	public static String emotionRequest( String subscriptionKey, final byte[ ] picBinary )
+	{
+		String result = null;
+
+		CloseableHttpClient httpClient = HttpClients.createDefault( );
+
+		try
+		{
+			// NOTE: You must use the same region in your REST call as you used to obtain your subscription keys.
+			// For example, if you obtained your subscription keys from westcentralus, replace "westus" in the
+			// URL below with "westcentralus".
+			HttpPost request = new HttpPost( "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize" );
+
+			request.setHeader( "Ocp-Apim-Subscription-Key", subscriptionKey );
+
+			EntityBuilder builder = EntityBuilder.create( );
+			builder.setContentType( ContentType.APPLICATION_OCTET_STREAM );
+			builder.setBinary( picBinary );
+			request.setEntity( builder.build( ) );
+
+			HttpResponse response = httpClient.execute( request );
+			HttpEntity entity = response.getEntity( );
+
+			if ( entity != null )
+			{
+				result = EntityUtils.toString( entity );
+			}
+		}
+		catch ( Exception e )
+		{
+			System.err.println( e.getMessage( ) );
+		}
+		finally
+		{
+			try
+			{
+				httpClient.close( );
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace( );
+				System.err.println( e.getMessage( ) );
+			}
 		}
 		return result;
 	}
@@ -121,7 +173,66 @@ public class RequestHelper
 		return result;
 	}
 
-	public static String identifyRequest( String subscriptionKey, String picUrl, String faceId )
+	public static String faceRequest( String subscriptionKey, final byte[ ] picBytes )
+	{
+		String result = null;
+		CloseableHttpClient httpClient = HttpClients.createDefault( );
+
+		try
+		{
+			URIBuilder builder = new URIBuilder( "https://westeurope.api.cognitive.microsoft.com/face/v1.0/detect" );
+
+			// Request parameters. All of them are optional.
+			builder.setParameter( "returnFaceId", "true" );
+			builder.setParameter( "returnFaceLandmarks", "false" );
+			builder.setParameter( "returnFaceAttributes",
+				"age,gender,headPose,smile,facialHair,glasses,emotion,hair,makeup,occlusion,accessories,blur,exposure,noise" );
+
+			// Prepare the URI for the REST API call.
+			URI uri = builder.build( );
+			HttpPost request = new HttpPost( uri );
+
+			// Request headers.
+			request.setHeader( "Ocp-Apim-Subscription-Key", subscriptionKey );
+
+			EntityBuilder entityBuilder = EntityBuilder.create( );
+			entityBuilder.setContentType( ContentType.APPLICATION_OCTET_STREAM );
+			entityBuilder.setBinary( picBytes );
+			request.setEntity( entityBuilder.build( ) );
+
+			// Execute the REST API call and get the response entity.
+			HttpResponse response = httpClient.execute( request );
+			HttpEntity entity = response.getEntity( );
+
+			if ( entity != null )
+			{
+				// Format and display the JSON response.
+				System.out.println( "REST Response:\n" );
+
+				result = EntityUtils.toString( entity ).trim( );
+			}
+		}
+		catch ( Exception e )
+		{
+			// Display error message.
+			System.out.println( e.getMessage( ) );
+		}
+		finally
+		{
+			try
+			{
+				httpClient.close( );
+			}
+			catch ( IOException e )
+			{
+				e.printStackTrace( );
+				System.err.println( e.getMessage( ) );
+			}
+		}
+		return result;
+	}
+
+	public static String identifyRequest( String subscriptionKey, final String personGroup, String faceId )
 	{
 		String result = null;
 		HttpClient httpclient = new DefaultHttpClient( );
@@ -140,7 +251,7 @@ public class RequestHelper
 
 			// Request body.
 			StringEntity reqEntity = new StringEntity(
-				"{\"personGroupId\":\"emotion_test\",\"faceIds\":[\"" + faceId +
+				"{\"personGroupId\":\"" + personGroup + "\",\"faceIds\":[\"" + faceId +
 					"\"],\"maxNumOfCandidatesReturned\":1,\"confidenceThreshold\": 0.5}" );
 			request.setEntity( reqEntity );
 
@@ -164,7 +275,7 @@ public class RequestHelper
 		return result;
 	}
 
-	public static String personRequest( String subscriptionKey, String picUrl, String personId )
+	public static String personRequest( String subscriptionKey, String personGroup, String personId )
 	{
 		String result = null;
 
@@ -177,7 +288,8 @@ public class RequestHelper
 			// URL below with "westcentralus".
 			URIBuilder uriBuilder =
 				new URIBuilder(
-					"https://westeurope.api.cognitive.microsoft.com/face/v1.0/persongroups/emotion_test/persons/" +
+					"https://westeurope.api.cognitive.microsoft.com/face/v1.0/persongroups/" + personGroup +
+						"/persons/" +
 						personId );
 
 			URI uri = uriBuilder.build( );

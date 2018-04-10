@@ -44,6 +44,11 @@
             <scope>test</scope>
         </dependency>
         <dependency>
+            <groupId>com.apiomat.nativemodule.helpers</groupId>
+            <artifactId>nm-common</artifactId>
+            <version>0.3.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>anttask</groupId>
             <artifactId>anttask</artifactId>
             <version>1.0.0</version>
@@ -154,6 +159,13 @@
             <version>base</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/lib/nativemodule-base.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>nm-common-0.3.0</groupId>
+            <artifactId>nm-common-0.3.0</artifactId>
+            <version>SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/nm-common-0.3.0-SNAPSHOT.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>servlet-api</groupId>
