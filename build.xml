@@ -1,4 +1,4 @@
-<project name="module" default="clean" basedir=".">
+<project xmlns:unless="ant:unless" name="module" default="clean" basedir=".">
 
 	<!-- 
        internal tasks and macros
@@ -49,32 +49,37 @@
 		<mkdir dir="${dist}" />
 		<mkdir dir="${src}" />
 	</target>
-
+	
 	<!-- 
        public tasks and macros
     -->
 
 	<target name="downloadNativeModule" description="Download the NativeModule">
-       <condition property="system.set" value="usedSystem=${system}&amp;" else="">
-          <isset property="system"/>
-        </condition>
+		<condition property="system.set" value="usedSystem=${system}&amp;" else="">
+			<isset property="system" />
+		</condition>
 
-        <condition property="merge.set" value="${merge}" else="true">
-          <isset property="merge"/>
-        </condition>
+		<condition property="merge.set" value="${merge}" else="true">
+			<isset property="merge" />
+		</condition>
 
-        <condition property="eclipse.set" value="${eclipse}" else="true">
-          <isset property="eclipse"/>
-        </condition>
-        <get dest="./nm.zip" src="${host}/yambas/rest/modules/${moduleName}/sdk?${system.set}merge=${merge.set}&amp;eclipse=${eclipse.set}" username="${customerEmail}" password="${password}" />
-        <mkdir dir="./tmp" />
+		<condition property="eclipse.set" value="${eclipse}" else="true">
+			<isset property="eclipse" />
+		</condition>
 
-		<copy tofile="./tmp/sdk.properties" file="sdk.properties" />
-		<copy todir="./tmp">
+		<condition property="overwriteHooks.set" value="${overwriteHooks}" else="false">
+			<isset property="overwriteHooks" />
+		</condition>
+
+		<get dest="./nm.zip" src="${host}/yambas/rest/modules/${moduleName}/sdk?${system.set}merge=${merge.set}&amp;eclipse=${eclipse.set}" username="${customerEmail}" password="${password}" />
+		<mkdir dir="./tmp" />
+
+		<copy tofile="./tmp/sdk.properties" file="sdk.properties" overwrite="true" />
+		<copy todir="./tmp" overwrite="true">
 			<fileset dir="${src}">
 				<include name="**/*Hooks.java" />
-                <include name="**/*HooksNonTransient.java" />
-                <include name="**/*HooksTransient.java" />
+				<include name="**/*HooksNonTransient.java" />
+				<include name="**/*HooksTransient.java" />
 				<include name="**/RestClass.java" />
 				<exclude name="**/IModelHooks.java" />
 			</fileset>
@@ -83,17 +88,22 @@
 		<copy file="./tmp/sdk.properties" tofile="sdk.properties" overwrite="true" />
 		<copy todir="${src}" overwrite="true">
 			<fileset dir="./tmp">
-				<include name="**/*Hooks.java" />
-                <include name="**/*HooksNonTransient.java" />
-                <include name="**/*HooksTransient.java" />
 				<include name="**/RestClass.java" />
 			</fileset>
 		</copy>
-
+		
+		<copy todir="${src}" overwrite="true" unless:true="${overwriteHooks.set}">
+			<fileset dir="./tmp">
+				<include name="**/*Hooks.java" />
+				<include name="**/*HooksNonTransient.java" />
+				<include name="**/*HooksTransient.java" />
+			</fileset>
+		</copy>
+		
 		<delete file="./nm.zip" />
 		<delete dir="./tmp" />
 	</target>
-
+		
 	<target name="package" depends="compile" description="Package the NativeModule as JAR">
 		<antcall target="_packageAntOld" />
 		<antcall target="_packageAntNew" />
@@ -115,7 +125,7 @@
 				<include name="**/META-INF/**" />
 			</fileset>
 			<fileset dir="">
-				<include name="pom.xml"/>
+				<include name="pom.xml" />
 			</fileset>
 		</jar>
 	</target>
@@ -136,7 +146,7 @@
 				<include name="**/META-INF/**" />
 			</fileset>
 			<fileset dir="">
-				<include name="pom.xml"/>
+				<include name="pom.xml" />
 			</fileset>
 		</jar>
 	</target>
@@ -151,11 +161,11 @@
 		<antcall target="downloadNativeModule" />
 		<antcall target="uploadNativeModule" />
 	</target>
-    <target name="updateVersion" description="Updates the NativeModule from and to the ApiOmat version specified in your sdk.properties">
-        <update-nm fromVersion="${fromVersion}"  toVersion="${toVersion}"/>
-    </target>
+	<target name="updateVersion" description="Updates the NativeModule from and to the ApiOmat version specified in your sdk.properties">
+		<update-nm fromVersion="${fromVersion}" toVersion="${toVersion}" />
+	</target>
 	<target name="_releaseWin" if="isWindows">
-		<set-released releaseState='{&quot;releaseState&quot;:&quot;RELEASED&quot;}' url="${host}/yambas/rest/modules/${moduleName}" system="${system}" username="${customerEmail}" password="${password}"  />
+		<set-released releaseState='{&quot;releaseState&quot;:&quot;RELEASED&quot;}' url="${host}/yambas/rest/modules/${moduleName}" system="${system}" username="${customerEmail}" password="${password}" />
 	</target>
 
 	<target name="_releaseUnix" if="isUnix">
@@ -175,7 +185,7 @@
 	<target name="unrelease" description="Sets the NativeModule unreleased" depends="_unreleaseWin, _unreleaseUnix" />
 
 	<target name="compile" depends="init" description="Compile the source">
-		<javac includeantruntime="false"  srcdir="${src}" destdir="${build}" classpathref="classpath" debug="true" encoding="UTF-8"/>
+		<javac includeantruntime="false" srcdir="${src}" destdir="${build}" classpathref="classpath" debug="true" encoding="UTF-8" />
 	</target>
 
 	<target name="clean" description="Clean up">

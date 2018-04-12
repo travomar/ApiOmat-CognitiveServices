@@ -120,7 +120,6 @@ public enum Status
     PASSWORD_LOCKED( 787, "Your password is locked, so you are currently not allowed to access this resource." ),
     NO_OBJECT_ID( 788, "The object doesn't have an ID (non-transient) or foreign ID (transient) yet" ),
     ACCOUNT_TEMPORARY_BLOCKED( 789, "Your account is currently blocked due to failing login attempts." ),
-    DATA_NOT_ATTACHED_TO_OBJECT( 790, "The object does not contain data with the given ID." ),
     APPLICATION_NOT_FOUND( 801, "Application was not found!" ),
     CUSTOMER_NOT_FOUND( 802, "Customer was not found!" ),
     ID_NOT_FOUND( 803, "ID was not found!" ),
@@ -133,7 +132,6 @@ public enum Status
     GROUP_NOT_FOUND( 811, "Group was not found!" ),
     ACCOUNT_NOT_FOUND( 812, "Account was not found!" ),
     DEFAULT_MODULE_NOT_FOUND( 813, "Default module was not found for the given account" ),
-    UI_NOT_FOUND( 814, "User Interface or version was not found!" ),
     MODULE_USE_FORBIDDEN( 820, "Required module is not attached to app" ),
     PUSH_ERROR_APIKEY( 821, "No API Key defined for Push service!" ),
     PUSH_ERROR_CERTIFICATE( 822, "No certificate defined for Push service!" ),
@@ -201,6 +199,7 @@ public enum Status
     ANALYTICS_ERROR( 929, "The analytics instance couldn't process the request correctly" ),
     EMAIL_ERROR( 930, "Error during sending email" ),
     MAX_HOOK_CALL_DEPTH_EXCEEDED( 931, "The maximum call depth for hook methods was exceeded" ),
+    MALFORMED_CUSTOM_CRON_METHOD( 932, "Detected malformed custom cron methods" ),
     HREF_NOT_FOUND( 601, "Class has no HREF; please save it first!" ),
     WRONG_URI_SYNTAX( 602, "URI syntax is wrong" ),
     WRONG_CLIENT_PROTOCOL( 603, "Client protocol is wrong" ),
@@ -226,6 +225,7 @@ public enum Status
     SSL_ERROR( 623, "An error occurred during establishing a secure connection" ),
     MAX_FILE_SIZE_OFFLINE_EXCEEDED( 624, "The max file size for offline saving is exceeded" ),
     SQL_CONSTRAINT( 625, "An error occurred because of an SQL constraint (for example unique ForeignID" ),
+    UNEXPECTED_STATUS_CODE( 626, "The returned status code was not expected." ),
     MALICIOUS_MEMBER( 950, "Malicious use of member detected!" ),
     NULL(9999, ""); //placeholder
 
